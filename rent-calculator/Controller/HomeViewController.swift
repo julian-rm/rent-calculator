@@ -14,31 +14,26 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         lblValidationMessage.isHidden = true
     }
+    
     
     @IBOutlet weak var rentAmountField: UITextField!
     @IBOutlet weak var lblValidationMessage: UILabel!
     
+    
     @IBAction func rentAmountEntered(_ sender: UITextField) {
-        
-        guard let input = rentAmountField.text, isValid(input: input) else {
+        if let input = Double(rentAmountField.text!) {
+            rentAmount = input
+            lblValidationMessage.isHidden = true
+            performSegue(withIdentifier: "rentSegue", sender: self)
+        } else {
             lblValidationMessage.isHidden = false
+            lblValidationMessage.text = "Enter an amount greater than $6,350"
             return
         }
-        rentAmount = Double(input)
-        performSegue(withIdentifier: "rentSegue", sender: self)
     }
     
-    func isValid(input: String) -> Bool {
-        if input.count == 0 {
-            lblValidationMessage.text = "Enter an amount greater than $6,350"
-            return false
-        }
-        return true
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! RentViewController
         destinationVC.rentAmount = rentAmount
