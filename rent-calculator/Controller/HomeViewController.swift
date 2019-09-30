@@ -24,6 +24,11 @@ class HomeViewController: UIViewController {
     
     @IBAction func rentAmountEntered(_ sender: UITextField) {
         if let input = Double(rentAmountField.text!) {
+            if input < 6350.0 {
+                lblValidationMessage.isHidden = false
+                lblValidationMessage.text = "Enter an amount greater than $6,350"
+                return
+            }
             rentAmount = input
             lblValidationMessage.isHidden = true
             performSegue(withIdentifier: "rentSegue", sender: self)
